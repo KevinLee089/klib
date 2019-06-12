@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name" translatable="false">kotlinx</string>
+    <string name="unit_km"> km</string>
+    <string name="unit_m"> m</string>
+</resources>

@@ -1,1 +1,1 @@
-include ':app', ':libx', ':kotlinx', ':compat'
+include ':kotlinx', ':compat'
