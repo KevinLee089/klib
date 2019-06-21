@@ -1,6 +1,6 @@
 package org.kevin.kotlinx
 
-inline fun <reified T> T.set(property: String, value: Any?) {
+inline fun <reified T> T.setProperty(property: String, value: Any?) {
     val cls = T::class.java
     try {
         val field = cls.getDeclaredField(property)
