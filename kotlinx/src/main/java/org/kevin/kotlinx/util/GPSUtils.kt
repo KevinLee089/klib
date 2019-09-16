@@ -1,10 +1,10 @@
 package org.kevin.kotlinx.util
 
 object GPSUtils {
-    var pi = 3.1415926535897932384626
-    var x_pi = 3.14159265358979324 * 3000.0 / 180.0
-    var a = 6378245.0
-    var ee = 0.00669342162296594323
+    private const val pi = 3.1415926535897932384626
+    private const val x_pi = 3.14159265358979324 * 3000.0 / 180.0
+    private const val a = 6378245.0
+    private const val ee = 0.00669342162296594323
 
     private fun transformLat(x: Double, y: Double): Double {
         var ret = (-100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x)))

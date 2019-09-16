@@ -2,6 +2,7 @@ package org.kevin.kotlinx
 
 import android.text.TextUtils
 import org.kevin.compat.defaultLocale
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -57,7 +58,7 @@ inline fun <reified T> T.logString(): String {
     val sb = StringBuilder()
     sb.append(cls.simpleName)
     sb.append("[")
-    sb.append(cls.members.filter { it is KProperty1<*, *> }.joinToString {
+    sb.append(cls.members.filterIsInstance<KProperty1<*, *>>().joinToString {
         it.isAccessible = true
         @Suppress("UNCHECKED_CAST") "${it.name}: ${(it as KProperty1<T, *>).get(this)}"
     })
@@ -66,7 +67,8 @@ inline fun <reified T> T.logString(): String {
 }
 
 @JvmOverloads
+@Throws(ParseException::class)
 fun String.getDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date {
     val sdf = SimpleDateFormat(pattern, defaultLocale)
-    return sdf.parse(this)
+    return sdf.parse(this)!!
 }

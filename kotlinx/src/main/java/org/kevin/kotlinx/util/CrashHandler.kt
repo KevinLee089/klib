@@ -26,7 +26,7 @@ class CrashHandler(private val context: Context): Thread.UncaughtExceptionHandle
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
-    override fun uncaughtException(t: Thread?, e: Throwable) {
+    override fun uncaughtException(t: Thread, e: Throwable) {
         try {
             writeToSdcard(e)
         } catch (e: IOException) {
@@ -44,8 +44,7 @@ class CrashHandler(private val context: Context): Thread.UncaughtExceptionHandle
     @Throws(IOException::class, PackageManager.NameNotFoundException::class)
     private fun writeToSdcard(t: Throwable) {
         if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) return
-        val pkg = context.packageName
-        val dir = File(Environment.getExternalStorageDirectory(), "$pkg${File.separator}crash")
+        val dir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "crash")
         if (!dir.exists()) {
             dir.mkdirs()
         }
@@ -60,7 +59,7 @@ class CrashHandler(private val context: Context): Thread.UncaughtExceptionHandle
         val writer = PrintWriter(FileWriter(file))
         writer.println(current)
         val pm = context.packageManager
-        val pInfo = pm.getPackageInfo(pkg, 0)
+        val pInfo = pm.getPackageInfo(context.packageName, 0)
         writer.println("App Version: ${pInfo.versionName}")
         writer.println("OS Version: ${Build.VERSION.RELEASE}")
         writer.println("Manufacturer: ${Build.MANUFACTURER}")
