@@ -58,9 +58,9 @@ inline fun <reified T> T.logString(): String {
     val sb = StringBuilder()
     sb.append(cls.simpleName)
     sb.append("[")
-    sb.append(cls.members.filterIsInstance<KProperty1<*, *>>().joinToString {
+    sb.append(cls.members.filterIsInstance<KProperty1<T, *>>().joinToString {
         it.isAccessible = true
-        @Suppress("UNCHECKED_CAST") "${it.name}: ${(it as KProperty1<T, *>).get(this)}"
+        "${it.name}: ${it.get(this)}"
     })
     sb.append("]")
     return sb.toString()

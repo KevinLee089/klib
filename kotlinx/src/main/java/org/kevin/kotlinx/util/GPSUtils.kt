@@ -1,5 +1,7 @@
 package org.kevin.kotlinx.util
 
+import kotlin.math.*
+
 object GPSUtils {
     private const val pi = 3.1415926535897932384626
     private const val x_pi = 3.14159265358979324 * 3000.0 / 180.0
@@ -7,18 +9,18 @@ object GPSUtils {
     private const val ee = 0.00669342162296594323
 
     private fun transformLat(x: Double, y: Double): Double {
-        var ret = (-100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x)))
-        ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0
-        ret += (20.0 * Math.sin(y * pi) + 40.0 * Math.sin(y / 3.0 * pi)) * 2.0 / 3.0
-        ret += (160.0 * Math.sin(y / 12.0 * pi) + 320 * Math.sin(y * pi / 30.0)) * 2.0 / 3.0
+        var ret = (-100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * sqrt(abs(x)))
+        ret += (20.0 * sin(6.0 * x * pi) + 20.0 * sin(2.0 * x * pi)) * 2.0 / 3.0
+        ret += (20.0 * sin(y * pi) + 40.0 * sin(y / 3.0 * pi)) * 2.0 / 3.0
+        ret += (160.0 * sin(y / 12.0 * pi) + 320 * sin(y * pi / 30.0)) * 2.0 / 3.0
         return ret
     }
 
     private fun transformLon(x: Double, y: Double): Double {
-        var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x))
-        ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0
-        ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0
-        ret += (150.0 * Math.sin(x / 12.0 * pi) + 300.0 * Math.sin(x / 30.0 * pi)) * 2.0 / 3.0
+        var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * sqrt(abs(x))
+        ret += (20.0 * sin(6.0 * x * pi) + 20.0 * sin(2.0 * x * pi)) * 2.0 / 3.0
+        ret += (20.0 * sin(x * pi) + 40.0 * sin(x / 3.0 * pi)) * 2.0 / 3.0
+        ret += (150.0 * sin(x / 12.0 * pi) + 300.0 * sin(x / 30.0 * pi)) * 2.0 / 3.0
         return ret
     }
 
@@ -29,11 +31,11 @@ object GPSUtils {
         var dLat = transformLat(lon - 105.0, lat - 35.0)
         var dLon = transformLon(lon - 105.0, lat - 35.0)
         val radLat = lat / 180.0 * pi
-        var magic = Math.sin(radLat)
+        var magic = sin(radLat)
         magic = 1 - ee * magic * magic
-        val sqrtMagic = Math.sqrt(magic)
+        val sqrtMagic = sqrt(magic)
         dLat = dLat * 180.0 / (a * (1 - ee) / (magic * sqrtMagic) * pi)
-        dLon = dLon * 180.0 / (a / sqrtMagic * Math.cos(radLat) * pi)
+        dLon = dLon * 180.0 / (a / sqrtMagic * cos(radLat) * pi)
         val mgLat = lat + dLat
         val mgLon = lon + dLon
         return doubleArrayOf(mgLat, mgLon)
@@ -58,11 +60,11 @@ object GPSUtils {
         var dLat = transformLat(lon - 105.0, lat - 35.0)
         var dLon = transformLon(lon - 105.0, lat - 35.0)
         val radLat = lat / 180.0 * pi
-        var magic = Math.sin(radLat)
+        var magic = sin(radLat)
         magic = 1 - ee * magic * magic
-        val sqrtMagic = Math.sqrt(magic)
+        val sqrtMagic = sqrt(magic)
         dLat = dLat * 180.0 / (a * (1 - ee) / (magic * sqrtMagic) * pi)
-        dLon = dLon * 180.0 / (a / sqrtMagic * Math.cos(radLat) * pi)
+        dLon = dLon * 180.0 / (a / sqrtMagic * cos(radLat) * pi)
         val mgLat = lat + dLat
         val mgLon = lon + dLon
         return doubleArrayOf(mgLat, mgLon)
@@ -73,9 +75,9 @@ object GPSUtils {
      */
     fun gcj02_2_Gps84(lat: Double, lon: Double): DoubleArray {
         val gps = transform(lat, lon)
-        val longtitude = lon * 2 - gps[1]
+        val longitude = lon * 2 - gps[1]
         val latitude = lat * 2 - gps[0]
-        return doubleArrayOf(latitude, longtitude)
+        return doubleArrayOf(latitude, longitude)
     }
 
     /**
@@ -85,10 +87,10 @@ object GPSUtils {
      * @param lon
      */
     fun gcj02_2_Bd09(lat: Double, lon: Double): DoubleArray {
-        val z = Math.sqrt(lon * lon + lat * lat) + 0.00002 * Math.sin(lat * x_pi)
-        val theta = Math.atan2(lat, lon) + 0.000003 * Math.cos(lon * x_pi)
-        val tempLon = z * Math.cos(theta) + 0.0065
-        val tempLat = z * Math.sin(theta) + 0.006
+        val z = sqrt(lon * lon + lat * lat) + 0.00002 * sin(lat * x_pi)
+        val theta = atan2(lat, lon) + 0.000003 * cos(lon * x_pi)
+        val tempLon = z * cos(theta) + 0.0065
+        val tempLat = z * sin(theta) + 0.006
         return doubleArrayOf(tempLat, tempLon)
     }
 
@@ -99,10 +101,10 @@ object GPSUtils {
     fun bd09_2_Gcj02(lat: Double, lon: Double): DoubleArray {
         val x = lon - 0.0065
         val y = lat - 0.006
-        val z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi)
-        val theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi)
-        val tempLon = z * Math.cos(theta)
-        val tempLat = z * Math.sin(theta)
+        val z = sqrt(x * x + y * y) - 0.00002 * sin(y * x_pi)
+        val theta = atan2(y, x) - 0.000003 * cos(x * x_pi)
+        val tempLon = z * cos(theta)
+        val tempLat = z * sin(theta)
         return doubleArrayOf(tempLat, tempLon)
     }
 
