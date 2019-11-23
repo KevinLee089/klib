@@ -49,7 +49,7 @@ class CrashHandler(private val context: Context): Thread.UncaughtExceptionHandle
             dir.mkdirs()
         }
 
-        val current = Calendar.getInstance().time.getFormatString()
+        val current = Calendar.getInstance().time.getFormatString("yyyy-MM-dd_HH:mm:ss")
         val file = File(dir, "$current.txt")
         if (file.exists()) {
             file.delete()
