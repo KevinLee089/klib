@@ -1,1 +1,1 @@
-include ':kotlinx', ':compat'
+include ':kotlinx', ':compat', ':jetpackx'
