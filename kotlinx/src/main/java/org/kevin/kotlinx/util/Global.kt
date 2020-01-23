@@ -6,10 +6,12 @@ import java.lang.ref.WeakReference
 
 object Global {
     private var sContext: WeakReference<Context>? = null
+    @JvmStatic
     val globalContext: Context
         @Throws(IllegalStateException::class) get() = sContext?.get() ?: throw IllegalStateException(
             "Must call Global.init(Context) before.")
 
+    @JvmStatic
     fun init(context: Context) {
         val ctx = sContext?.get()
         if (ctx != null) {

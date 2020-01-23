@@ -15,6 +15,7 @@ import java.util.*
 class CrashHandler(private val context: Context): Thread.UncaughtExceptionHandler {
 
     companion object {
+        @JvmStatic
         fun initialize(context: Context) {
             CrashHandler(context.applicationContext)
         }

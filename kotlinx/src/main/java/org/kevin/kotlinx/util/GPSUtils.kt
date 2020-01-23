@@ -53,6 +53,7 @@ object GPSUtils {
      * @param lon
      * @return
      */
+    @JvmStatic
     fun gps84_2_Gcj02(lat: Double, lon: Double): DoubleArray {
         if (outOfChina(lat, lon)) {
             return doubleArrayOf(lat, lon)
@@ -73,6 +74,7 @@ object GPSUtils {
     /**
      * * 火星坐标系 (GCJ-02) to 84 * * @param lon * @param lat * @return
      */
+    @JvmStatic
     fun gcj02_2_Gps84(lat: Double, lon: Double): DoubleArray {
         val gps = transform(lat, lon)
         val longitude = lon * 2 - gps[1]
@@ -86,6 +88,7 @@ object GPSUtils {
      * @param lat
      * @param lon
      */
+    @JvmStatic
     fun gcj02_2_Bd09(lat: Double, lon: Double): DoubleArray {
         val z = sqrt(lon * lon + lat * lat) + 0.00002 * sin(lat * x_pi)
         val theta = atan2(lat, lon) + 0.000003 * cos(lon * x_pi)
@@ -98,6 +101,7 @@ object GPSUtils {
      * * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 * * 将 BD-09 坐标转换成GCJ-02 坐标 * * @param
      * bd_lat * @param bd_lon * @return
      */
+    @JvmStatic
     fun bd09_2_Gcj02(lat: Double, lon: Double): DoubleArray {
         val x = lon - 0.0065
         val y = lat - 0.006
@@ -113,11 +117,13 @@ object GPSUtils {
      * @param lon
      * @return
      */
+    @JvmStatic
     fun gps84_2_bd09(lat: Double, lon: Double): DoubleArray {
         val gcj02 = gps84_2_Gcj02(lat, lon)
         return gcj02_2_Bd09(gcj02[0], gcj02[1])
     }
 
+    @JvmStatic
     fun bd09_2_gps84(lat: Double, lon: Double): DoubleArray {
         val gcj02 = bd09_2_Gcj02(lat, lon)
         val gps84 = gcj02_2_Gps84(gcj02[0], gcj02[1])
